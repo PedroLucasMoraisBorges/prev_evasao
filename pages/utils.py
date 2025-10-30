@@ -17,6 +17,7 @@ class CreateDataFromCSV:
 
         if not all(
             [
+                ("ID" in header),
                 ("ALUNO_BRANCO_AZUL" in header),
                 ("COEFICIENTE" in header),
                 ("FORMA_INGRESSO" in header),
@@ -90,6 +91,7 @@ class CreateDataFromCSV:
 
         objs_to_plot = []
         for idx, line in enumerate(linhas_csv, start=1):
+            critical_features = []
             features = [
                 float(line[header_indexes[col]]) if line[header_indexes[col]] != "" else 0.0
                 for col in FEATURE_COLUMNS
@@ -97,13 +99,36 @@ class CreateDataFromCSV:
             prediction = model.predict([features])
             prob = getattr(model, "predict_proba", lambda x: None)([features])
 
-            aluno = f'Aluno {idx}'
-            print(aluno, prediction, prob)
+            aluno = line[header_indexes["ID"]]
+            prediction = int(prediction[0]) if hasattr(prediction[0], "__int__") else str(prediction[0])
+
+            if prediction == 1:
+                if float(line[header_indexes["PERCENTUAL_CARGA_CUMPRIDA"]]) < 30:
+                    critical_features.append("Percentual de carga cumprida muito baixo")
+                if float(line[header_indexes["M_AV1"]]) < 5:
+                    critical_features.append("Média da AV1 baixa")
+                if float(line[header_indexes["BOLSA"]]) == 0:  
+                    critical_features.append("Aluno sem bolsa de estudos")
+                if float(line[header_indexes["BOLSA"]]) in [6, 7]:  
+                    critical_features.append("Aluno com bolsa 50% ou 60%")
+                if float(line[header_indexes["AV1"]]) < 6:   
+                    critical_features.append("AV1 com nota baixa")
+                if float(line[header_indexes["AVF"]]) > 0:
+                    critical_features.append("Aluno ficou de AVF no último período")
+                if float(line[header_indexes["DEBITOS_NO_PERIDO"]]) > 1:
+                    critical_features.append("Múltiplos débitos no período")
+                if float(line[header_indexes["FALTA_AT"]]) > 2:
+                    critical_features.append("Frequência baixa")
+                if float(line[header_indexes["COEFICIENTE"]]) < 8:
+                    critical_features.append("Coeficiente baixo")
+
    
             objs_to_plot.append({
-                "features": dict(zip(FEATURE_COLUMNS, features)),
-                "prediction": int(prediction[0]) if hasattr(prediction[0], "__int__") else str(prediction[0]),
+                "name": aluno,
+                "features": critical_features,
+                "prediction": prediction,
                 "probability": float(prob[0][1]) if prob is not None else None,
+                "features" : critical_features
             })
 
         return objs_to_plot

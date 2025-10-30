@@ -6,7 +6,7 @@ class PredictForm(forms.ModelForm):
         label='Selecione o arquivo CSV',
         widget=forms.FileInput(
             attrs={
-                'class': 'form-control-file',
+                'class': 'block w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:outline-none',
                 'accept': '.csv'
             }
         )

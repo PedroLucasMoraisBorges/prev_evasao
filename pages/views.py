@@ -21,6 +21,7 @@ class HomePageView(View):
             result = CreateDataFromCSV().read_csv(test.file.url)
             context = {
                 'form': form,
+                'results': result,
                 'message': 'File uploaded successfully!'
             }
             return render(request, 'home.html', context)
