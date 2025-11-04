@@ -51,6 +51,7 @@ class CreateDataFromCSV:
                 ("REPROV_TOT" in header)
             ]
         ):
+            print("Erro: Colunas necessárias não encontradas no CSV.")
             return {
                 "error": "É necessário que o arquivo para predição contenha as colunas *."
             }
@@ -90,6 +91,10 @@ class CreateDataFromCSV:
         header_indexes = {field: index for index, field in enumerate(header)}
 
         objs_to_plot = []
+        poss_evasores = 0
+        poss_ativos = 0
+        totais = 0
+
         for idx, line in enumerate(linhas_csv, start=1):
             critical_features = []
             features = [
@@ -103,6 +108,7 @@ class CreateDataFromCSV:
             prediction = int(prediction[0]) if hasattr(prediction[0], "__int__") else str(prediction[0])
 
             if prediction == 1:
+                poss_evasores += 1
                 if float(line[header_indexes["PERCENTUAL_CARGA_CUMPRIDA"]]) < 30:
                     critical_features.append("Percentual de carga cumprida muito baixo")
                 if float(line[header_indexes["M_AV1"]]) < 5:
@@ -121,7 +127,10 @@ class CreateDataFromCSV:
                     critical_features.append("Frequência baixa")
                 if float(line[header_indexes["COEFICIENTE"]]) < 8:
                     critical_features.append("Coeficiente baixo")
+            else:
+                poss_ativos += 1  
 
+            totais += 1
    
             objs_to_plot.append({
                 "name": aluno,
@@ -131,7 +140,14 @@ class CreateDataFromCSV:
                 "features" : critical_features
             })
 
-        return objs_to_plot
+        return {
+            "data": objs_to_plot,   
+            "summary": {
+                "poss_evasores": poss_evasores,
+                "poss_ativos": poss_ativos,
+                "total": totais
+            }
+        }
 
     @classmethod
     def read_csv(self, file_path):
