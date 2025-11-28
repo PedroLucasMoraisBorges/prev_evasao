@@ -87,4 +87,4 @@ python manage.py createsuperuser
 python manage.py runserver
 ```
 
-A aplicação estará acessível em http://localhost:8080.
+A aplicação estará acessível em http://127.0.0.1:8000/.
