@@ -8,7 +8,10 @@
 
 ## 📜 Descrição do Projeto
 
-Este projeto consiste no desenvolvimento de uma interface para implantação do modelo preditivo treinado no TCC. O intuito é ter uma interface simples e intuitiva para que o usuário consiga efetuar predições com arquivos csvs., 
+Este projeto entrega uma interface web dedicada à execução do modelo preditivo desenvolvido no TCC, permitindo que usuários processem arquivos CSV e obtenham inferências de forma ágil e intuitiva.
+A solução foi estruturada para oferecer uma experiência simples, objetiva e orientada a resultados, eliminando fricções no uso do modelo treinado.
+
+A máquina preditiva integrada é capaz de identificar alunos com o perfil de evasão, classificando se um aluno apresenta ou não perfil compatível com tendência à evasão. Essa camada de inteligência oferece suporte decisório, permitindo antecipação de casos críticos e atuação estratégica baseada em dados. 
 
 ---
 
