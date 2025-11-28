@@ -17,7 +17,6 @@ Este projeto consiste no desenvolvimento de uma interface para implantação do 
 * [Stack de Tecnologias](#-stack-de-tecnologias)
 * [Estrutura de Apps Django](#-estrutura-de-apps-django)
 * [Iniciando o Projeto (Primeira Vez)](#-iniciando-o-projeto-primeira-vez)
-* [Executando o Projeto](#️-executando-o-projeto)
 
 ---
 
